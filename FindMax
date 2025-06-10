@@ -1,0 +1,38 @@
+FIND N MAX NUMBER 
+
+USING RECUSION
+
+function findNthMax(arr, n) {
+    // Helper to find the max value and its index recursively
+    function findMaxIndex(a, idx = 0, maxIdx = 0) {
+        if (idx === a.length) return maxIdx;
+        return findMaxIndex(a, idx + 1, a[idx] > a[maxIdx] ? idx : maxIdx);
+    }
+
+    function helper(a, k) {
+        if (k === 1) {
+            // Find the max value recursively
+            let maxIdx = findMaxIndex(a);
+            return a[maxIdx];
+        } else {
+            // Find and remove the current max, then recurse
+            let maxIdx = findMaxIndex(a);
+            let maxVal = a[maxIdx];
+            // Remove the found max by shifting elements left
+            for (let i = maxIdx; i < a.length - 1; i++) {
+                a[i] = a[i + 1];
+            }
+            a.length = a.length - 1; // Reduce array size
+            return helper(a, k - 1);
+        }
+    }
+
+    // Make a copy to avoid mutating the original array
+    return helper(arr.slice(), n);
+}
+
+// Example usage:
+const num = [1, 3, 5, 7, 9, 11];
+console.log("2nd max:", findNthMax(num, 2)); // 9
+console.log("3rd max:", findNthMax(num, 3)); // 7
+console.log("4th max:", findNthMax(num, 4)); // 5
